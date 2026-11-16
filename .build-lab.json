@@ -1,0 +1,7 @@
+{
+  "name": "pitchpipe",
+  "description": "Mic tuner and chord detector built from scratch (FFT, YIN, chroma) that runs fully in your browser.",
+  "language": "TypeScript",
+  "arc_days": 7,
+  "pages": true
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Tune your instrument and recognise chords from your microphone. Runs entirely in your browser."
+    />
+    <title>pitchpipe — tuner and chord detector</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>pitchpipe</h1>
+        <p class="lede">
+          A tuner and chord detector that listens through your microphone. Audio
+          is analysed on your device and never uploaded.
+        </p>
+      </header>
+      <section id="tuner" aria-live="polite">
+        <p id="note" class="note">–</p>
+        <p id="detail" class="detail">Press start and play a single note.</p>
+        <button id="toggle" type="button">Start listening</button>
+        <p id="error" class="error" role="alert" hidden></p>
+      </section>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

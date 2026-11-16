@@ -1,0 +1,51 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f7f7f4;
+  --fg: #1c1d1f;
+  --muted: #62666d;
+  --accent: #0b6e4f;
+  --space: 1rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121315;
+    --fg: #ececec;
+    --muted: #9aa0a8;
+    --accent: #4fd1a1;
+  }
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    1rem/1.5 system-ui,
+    sans-serif;
+}
+main {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: calc(var(--space) * 2) var(--space);
+  text-align: center;
+}
+.lede,
+.detail {
+  color: var(--muted);
+}
+.note {
+  font-size: 5rem;
+  font-weight: 700;
+  margin: var(--space) 0 0;
+}
+button {
+  font: inherit;
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  cursor: pointer;
+}
+.error {
+  color: #d9534f;
+}

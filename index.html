@@ -20,7 +20,37 @@
         </p>
       </header>
       <section id="tuner" aria-live="polite">
+        <div class="controls">
+          <label
+            >Instrument
+            <select id="preset"></select>
+          </label>
+          <label
+            >A4 (Hz)
+            <input
+              id="a4"
+              type="number"
+              min="415"
+              max="466"
+              step="1"
+              value="440"
+            />
+          </label>
+        </div>
         <p id="note" class="note">–</p>
+        <div
+          id="gauge"
+          class="gauge"
+          role="meter"
+          aria-label="Tuning offset in cents"
+          aria-valuemin="-50"
+          aria-valuemax="50"
+          aria-valuenow="0"
+        >
+          <span class="tick"></span>
+          <span id="needle" class="needle"></span>
+        </div>
+        <p id="target" class="detail"></p>
         <p id="detail" class="detail">Press start and play a single note.</p>
         <button id="toggle" type="button">Start listening</button>
         <p id="error" class="error" role="alert" hidden></p>

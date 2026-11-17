@@ -42,18 +42,19 @@ bash check.sh    # format check, lint, typecheck, tests, build
 
 ## Demo
 
-**Status: partially available (Day 1).** Run `npm run dev`, open the page, press _Start listening_ and hum or play a note. Expect the note name (e.g. `A4`), its frequency and the offset in cents. Chord mode, gauge UI and file input are planned (see [PLAN.md](PLAN.md)).
+**Status: partially available (Day 2).** Run `npm run dev`, open the page, press _Start listening_ and hum or play a note. Expect the note name (e.g. `A4`), its frequency, a needle gauge of the offset in cents, and, with an instrument preset selected, the nearest string and how sharp or flat it is. A4 is adjustable from 415 to 466 Hz. Chord mode and file input are planned (see [PLAN.md](PLAN.md)).
 
 ## Design decisions & trade-offs
 
 - **YIN over FFT peak picking** for the tuner: robust to strong harmonics and accurate to ~1 cent with parabolic interpolation, at O(N·τ) cost that is fine for 4096-sample frames.
 - **No audio libraries**: the point is to understand and test each stage.
+- **Median filter + hysteresis** for display stability: the median drops one-frame octave glitches; a note only changes once the pitch is >65 cents from the current note's centre, so a pitch on a semitone boundary does not flicker.
 - Echo cancellation, noise suppression and AGC are disabled on the mic stream because they distort pitch.
 
 ## Roadmap
 
 - [x] Day 1: FFT, YIN, note mapping, minimal mic tuner
-- [ ] Tuner gauge, smoothing, instrument presets
+- [x] Tuner gauge, smoothing, instrument presets
 - [ ] Chroma + chord recognition
 - [ ] Product UI, shortcuts, light/dark
 - [ ] Audio file analysis and Playwright e2e

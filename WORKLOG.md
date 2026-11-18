@@ -18,3 +18,10 @@ Newest entries at the bottom. Each entry records what actually changed, what was
 - Learned: ukulele's re-entrant tuning means "nearest string" must use pitch distance, not string order. I also fumbled a test's expected frequency (A1 is 432/8 Hz), which is a reminder to derive targets from `midiToFreq`.
 - Still not verified with a real microphone in a browser; the gauge was only checked by typecheck and build. Day 6 adds Playwright.
 - Next: chroma features from the FFT (Day 3).
+
+## 2026-11-18 — Day 3
+
+- Added `chroma()` (Hann + FFT, peak picking with parabolic interpolation, log-frequency pitch-class mapping, 1/(1+f/500) harmonic roll-off, sqrt compression, null on silence) and `ChromaSmoother` (EMA, decays on silent frames); 8 new tests including C major / A minor triads with harmonics, noise and A4=432.
+- Learned: peak picking on an 8192-point frame (5.4 Hz bins) is enough for low-register chord tones only because of interpolation; plain bin summing would smear semitones below ~C3.
+- Not yet tested on real recordings, only synthetic signals.
+- Next: chord templates, synthetic corpus and Viterbi smoothing (Day 4).

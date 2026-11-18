@@ -47,6 +47,7 @@ bash check.sh    # format check, lint, typecheck, tests, build
 ## Design decisions & trade-offs
 
 - **YIN over FFT peak picking** for the tuner: robust to strong harmonics and accurate to ~1 cent with parabolic interpolation, at O(N·τ) cost that is fine for 4096-sample frames.
+- **Chroma from spectral peaks, not raw bins**: interpolated peaks are mapped to pitch classes on a log-frequency axis and down-weighted with frequency, so harmonics (which fold onto fifths and thirds) matter less than fundamentals.
 - **No audio libraries**: the point is to understand and test each stage.
 - **Median filter + hysteresis** for display stability: the median drops one-frame octave glitches; a note only changes once the pitch is >65 cents from the current note's centre, so a pitch on a semitone boundary does not flicker.
 - Echo cancellation, noise suppression and AGC are disabled on the mic stream because they distort pitch.
@@ -55,7 +56,8 @@ bash check.sh    # format check, lint, typecheck, tests, build
 
 - [x] Day 1: FFT, YIN, note mapping, minimal mic tuner
 - [x] Tuner gauge, smoothing, instrument presets
-- [ ] Chroma + chord recognition
+- [x] Chroma features (`src/dsp/chroma.ts`)
+- [ ] Chord recognition
 - [ ] Product UI, shortcuts, light/dark
 - [ ] Audio file analysis and Playwright e2e
 - [ ] Screenshots, accessibility and performance budgets

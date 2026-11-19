@@ -25,3 +25,11 @@ Newest entries at the bottom. Each entry records what actually changed, what was
 - Learned: peak picking on an 8192-point frame (5.4 Hz bins) is enough for low-register chord tones only because of interpolation; plain bin summing would smear semitones below ~C3.
 - Not yet tested on real recordings, only synthetic signals.
 - Next: chord templates, synthetic corpus and Viterbi smoothing (Day 4).
+
+## 2026-11-19 — Day 4
+
+- Added `src/dsp/chords.ts`: weighted templates for maj/min/7/maj7/min7/dim/sus4 over 12 roots (84 states), cosine scoring, `recognizeChord` with a no-chord threshold, offline `viterbi` and a causal `ChordTracker` (forward filter) sharing one sticky HMM.
+- 12 new tests: template sanity, a generated corpus (7 qualities x 12 roots x 2 noise levels, harmonic tones) at >= 90% accuracy, and flicker tests where Viterbi recovers the exact sequence from frames with every 4th one corrupted.
+- Learned: the first version of the flicker test failed for a real reason. A glitch chord sharing a pitch class (F#) with Gmaj7 made the HMM settle on Gmaj7 for all G frames; evidence was genuinely ambiguous. Also beta=12 made the online filter flip on a single bad frame; beta=6 makes one glitch cost less than a chord change. Glitch frames in the test now share no pitch class with the true chords.
+- Only synthetic signals so far, no real recordings. sus2 is omitted on purpose (it equals another root's sus4).
+- Next: product UI with chord mode, shortcuts, history timeline and light/dark (Day 5).

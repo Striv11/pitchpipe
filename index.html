@@ -19,6 +19,19 @@
           is analysed on your device and never uploaded.
         </p>
       </header>
+      <div class="modes" role="group" aria-label="Mode">
+        <button id="mode-tuner" type="button" class="mode" aria-pressed="true">
+          Tuner <kbd>T</kbd>
+        </button>
+        <button
+          id="mode-chords"
+          type="button"
+          class="mode"
+          aria-pressed="false"
+        >
+          Chords <kbd>C</kbd>
+        </button>
+      </div>
       <section id="tuner" aria-live="polite">
         <div class="controls">
           <label
@@ -52,8 +65,28 @@
         </div>
         <p id="target" class="detail"></p>
         <p id="detail" class="detail">Press start and play a single note.</p>
-        <button id="toggle" type="button">Start listening</button>
-        <p id="error" class="error" role="alert" hidden></p>
+      </section>
+      <section id="chords" hidden aria-live="polite">
+        <p id="chord" class="note">–</p>
+        <p id="chord-detail" class="detail">
+          Press start and play a chord or a song.
+        </p>
+        <h2>History</h2>
+        <ol id="history" class="history" aria-label="Chord history">
+          <li class="empty">Chords you play will appear here.</li>
+        </ol>
+      </section>
+      <button id="toggle" type="button">
+        Start listening <kbd>Space</kbd>
+      </button>
+      <p id="error" class="error" role="alert" hidden></p>
+      <section class="about">
+        <h2>How it works</h2>
+        <ul>
+          <li>Pitch from the YIN algorithm; chords from chroma features.</li>
+          <li>All DSP is written from scratch and runs in your browser.</li>
+          <li>Nothing is recorded or uploaded.</li>
+        </ul>
       </section>
     </main>
     <script type="module" src="./src/main.ts"></script>

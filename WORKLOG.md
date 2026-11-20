@@ -33,3 +33,11 @@ Newest entries at the bottom. Each entry records what actually changed, what was
 - Learned: the first version of the flicker test failed for a real reason. A glitch chord sharing a pitch class (F#) with Gmaj7 made the HMM settle on Gmaj7 for all G frames; evidence was genuinely ambiguous. Also beta=12 made the online filter flip on a single bad frame; beta=6 makes one glitch cost less than a chord change. Glitch frames in the test now share no pitch class with the true chords.
 - Only synthetic signals so far, no real recordings. sus2 is omitted on purpose (it equals another root's sus4).
 - Next: product UI with chord mode, shortcuts, history timeline and light/dark (Day 5).
+
+## 2026-11-20 — Day 5
+
+- Product UI: Tuner/Chords mode switch, live chord display, chord history timeline (segments merged, <300 ms ones hidden, bounded to 32), "how it works" section, loading state while the mic permission prompt is open, light/dark tokens (already present) plus focus rings and a 360px breakpoint.
+- Pulled UI logic out of the DOM so it is testable: `ChordEngine` (chroma -> EMA -> HMM), `ChordHistory`, `resolveShortcut` (Space, T, C; ignores modifiers, form fields, and Space on a button to avoid a double toggle) and `micErrorMessage` (denied / not found / busy / unsupported). `mic.ts` now hands raw 8192-sample frames to the caller; the tuner uses the newest 4096 for YIN. 11 new tests.
+- Learned: the chroma smoother decays through silence on purpose, so the engine takes a handful of silent frames to return null; my first test wrongly expected an immediate null.
+- Not verified: the DOM wiring (`main.ts`) and the 360px layout were only checked by typecheck/lint/build, not in a browser; no real mic yet. Day 6 adds Playwright with a fake audio device, which should cover this.
+- Next: audio-file input via decodeAudioData, Playwright e2e, frame-time benchmark (Day 6).

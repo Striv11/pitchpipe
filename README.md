@@ -42,7 +42,7 @@ bash check.sh    # format check, lint, typecheck, tests, build
 
 ## Demo
 
-**Status: partially available (Day 2).** Run `npm run dev`, open the page, press _Start listening_ and hum or play a note. Expect the note name (e.g. `A4`), its frequency, a needle gauge of the offset in cents, and, with an instrument preset selected, the nearest string and how sharp or flat it is. A4 is adjustable from 415 to 466 Hz. Chord mode and file input are planned (see [PLAN.md](PLAN.md)).
+**Status: partially available (Day 5).** Run `npm run dev`, open the page, press _Start listening_ (or Space) and hum or play a note. Press `C` for chord mode: the detected chord and a history timeline appear; `T` returns to the tuner. Expect the note name (e.g. `A4`), its frequency, a needle gauge of the offset in cents, and, with an instrument preset selected, the nearest string and how sharp or flat it is. A4 is adjustable from 415 to 466 Hz. Permission-denied, missing-device and busy-device errors get distinct messages. File input is planned (see [PLAN.md](PLAN.md)).
 
 ## Design decisions & trade-offs
 
@@ -59,7 +59,7 @@ bash check.sh    # format check, lint, typecheck, tests, build
 - [x] Tuner gauge, smoothing, instrument presets
 - [x] Chroma features (`src/dsp/chroma.ts`)
 - [x] Chord recognition (`src/dsp/chords.ts`)
-- [ ] Product UI, shortcuts, light/dark
+- [x] Product UI, shortcuts, light/dark
 - [ ] Audio file analysis and Playwright e2e
 - [ ] Screenshots, accessibility and performance budgets
 

@@ -1,16 +1,18 @@
-import { detectPitch } from "./dsp/pitch";
-import { noteFromFrequency, type NoteInfo } from "./dsp/notes";
+/**
+ * Starts microphone capture; calls onFrame ~20x/s with the latest 8192
+ * samples. Returns a stop function. This is the only module that touches
+ * Web Audio.
+ */
+export const FRAME_SIZE = 8192;
 
-export interface Reading {
-  frequency: number;
-  clarity: number;
-  note: NoteInfo;
-}
-
-/** Starts microphone capture; calls onReading ~20x/s. Returns a stop function. */
 export async function startMic(
-  onReading: (r: Reading | null) => void,
+  onFrame: (frame: Float32Array, sampleRate: number) => void,
 ): Promise<() => void> {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    throw Object.assign(new Error("getUserMedia unavailable"), {
+      name: "UnsupportedError",
+    });
+  }
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: {
       echoCancellation: false,
@@ -20,13 +22,12 @@ export async function startMic(
   });
   const ctx = new AudioContext();
   const analyser = ctx.createAnalyser();
-  analyser.fftSize = 4096;
+  analyser.fftSize = FRAME_SIZE;
   ctx.createMediaStreamSource(stream).connect(analyser);
   const buf = new Float32Array(analyser.fftSize);
   const timer = setInterval(() => {
     analyser.getFloatTimeDomainData(buf);
-    const p = detectPitch(buf, ctx.sampleRate);
-    onReading(p && { ...p, note: noteFromFrequency(p.frequency) });
+    onFrame(buf, ctx.sampleRate);
   }, 50);
   return () => {
     clearInterval(timer);

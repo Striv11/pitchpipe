@@ -6,6 +6,7 @@ import { A4_MAX, A4_MIN, PRESETS, clampA4, nearestString } from "./dsp/presets";
 import { ChordHistory } from "./history";
 import { resolveShortcut } from "./shortcuts";
 import { micErrorMessage } from "./errors";
+import { analyzeChords, mixToMono } from "./analyze";
 
 const $ = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -191,4 +192,62 @@ document.addEventListener("keydown", (e) => {
   e.preventDefault();
   if (action === "toggle") void toggle();
   else setMode(action);
+});
+
+const fileInput = $<HTMLInputElement>("file");
+const dropEl = $("drop");
+const fileStatus = $("file-status");
+const fileResult = $("file-result");
+
+const fmt = (t: number) =>
+  `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+
+async function analyseFile(file: File): Promise<void> {
+  fileResult.replaceChildren();
+  fileStatus.textContent = `Analysing ${file.name}…`;
+  let ctx: AudioContext | null = null;
+  try {
+    ctx = new AudioContext();
+    const buf = await ctx.decodeAudioData(await file.arrayBuffer());
+    const mono = mixToMono(
+      Array.from({ length: buf.numberOfChannels }, (_, i) =>
+        buf.getChannelData(i),
+      ),
+    );
+    // Yield once so the status text paints before the synchronous analysis.
+    await new Promise((r) => setTimeout(r, 0));
+    const segs = analyzeChords(mono, buf.sampleRate);
+    fileStatus.textContent = segs.length
+      ? `${segs.length} chord segments in ${fmt(buf.duration)}.`
+      : "No chords recognised in this file.";
+    for (const s of segs) {
+      const li = document.createElement("li");
+      li.textContent = `${s.name} ${fmt(s.start)}`;
+      li.title = `${s.start.toFixed(1)}–${s.end.toFixed(1)} s`;
+      fileResult.append(li);
+    }
+  } catch (err) {
+    fileStatus.textContent =
+      err instanceof RangeError
+        ? err.message.replace(/^/, "Cannot analyse: ")
+        : "Could not decode this file. Try a WAV, MP3 or OGG.";
+  } finally {
+    void ctx?.close();
+  }
+}
+
+fileInput.addEventListener("change", () => {
+  const f = fileInput.files?.[0];
+  if (f) void analyseFile(f);
+});
+dropEl.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropEl.classList.add("over");
+});
+dropEl.addEventListener("dragleave", () => dropEl.classList.remove("over"));
+dropEl.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropEl.classList.remove("over");
+  const f = e.dataTransfer?.files[0];
+  if (f) void analyseFile(f);
 });

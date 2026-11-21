@@ -42,7 +42,7 @@ bash check.sh    # format check, lint, typecheck, tests, build
 
 ## Demo
 
-**Status: partially available (Day 5).** Run `npm run dev`, open the page, press _Start listening_ (or Space) and hum or play a note. Press `C` for chord mode: the detected chord and a history timeline appear; `T` returns to the tuner. Expect the note name (e.g. `A4`), its frequency, a needle gauge of the offset in cents, and, with an instrument preset selected, the nearest string and how sharp or flat it is. A4 is adjustable from 415 to 466 Hz. Permission-denied, missing-device and busy-device errors get distinct messages. File input is planned (see [PLAN.md](PLAN.md)).
+**Status: partially available (Day 5).** Run `npm run dev`, open the page, press _Start listening_ (or Space) and hum or play a note. Press `C` for chord mode: the detected chord and a history timeline appear; `T` returns to the tuner. Expect the note name (e.g. `A4`), its frequency, a needle gauge of the offset in cents, and, with an instrument preset selected, the nearest string and how sharp or flat it is. A4 is adjustable from 415 to 466 Hz. Permission-denied, missing-device and busy-device errors get distinct messages. You can also drop an audio file (anything the browser can decode) in the _Analyse a file_ section to get a timed chord list, decoded and analysed locally with offline Viterbi smoothing, capped at 10 minutes.
 
 ## Design decisions & trade-offs
 
@@ -60,7 +60,8 @@ bash check.sh    # format check, lint, typecheck, tests, build
 - [x] Chroma features (`src/dsp/chroma.ts`)
 - [x] Chord recognition (`src/dsp/chords.ts`)
 - [x] Product UI, shortcuts, light/dark
-- [ ] Audio file analysis and Playwright e2e
+- [x] Audio file analysis
+- [ ] Playwright e2e
 - [ ] Screenshots, accessibility and performance budgets
 
 ## License

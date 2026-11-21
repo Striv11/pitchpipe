@@ -79,6 +79,15 @@
       <button id="toggle" type="button">
         Start listening <kbd>Space</kbd>
       </button>
+      <section id="file-section" class="file">
+        <h2>Analyse a file</h2>
+        <label id="drop" class="drop">
+          <span>Drop an audio file here or choose one</span>
+          <input id="file" type="file" accept="audio/*" />
+        </label>
+        <p id="file-status" class="detail" role="status"></p>
+        <ol id="file-result" class="history" aria-label="File chords"></ol>
+      </section>
       <p id="error" class="error" role="alert" hidden></p>
       <section class="about">
         <h2>How it works</h2>

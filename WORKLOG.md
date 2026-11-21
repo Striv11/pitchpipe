@@ -41,3 +41,11 @@ Newest entries at the bottom. Each entry records what actually changed, what was
 - Learned: the chroma smoother decays through silence on purpose, so the engine takes a handful of silent frames to return null; my first test wrongly expected an immediate null.
 - Not verified: the DOM wiring (`main.ts`) and the 360px layout were only checked by typecheck/lint/build, not in a browser; no real mic yet. Day 6 adds Playwright with a fake audio device, which should cover this.
 - Next: audio-file input via decodeAudioData, Playwright e2e, frame-time benchmark (Day 6).
+
+## 2026-11-21 — Day 6
+
+- Added `src/analyze.ts` (`analyzeChords`, `mixToMono`): offline chord analysis of a whole recording using the same chroma/templates with full-sequence Viterbi, timed segments, silence breaks segments, 10-minute cap. Wired into the page as a drop zone / file picker using `decodeAudioData`; decode and range errors show a message.
+- Tests: C-F-G progression recovered with segment starts within 0.5 s, silence splitting, empty/short input, bad params, and a median-of-40 benchmark asserting chroma + scoring of one 8192-sample frame takes < 5 ms.
+- Learned: with 3 harmonics at 1/h in the test tones, C and F came out as Cmaj7/Fmaj7, the leakage already noted in the README. I used 2-harmonic tones in these tests rather than loosen assertions; real recordings will show this limit.
+- Not done: Playwright is not installed here (no network), so the e2e for tuner/chord flows and the file-drop DOM path are unverified in a browser. Marked Day 6 as partial `[~]`.
+- Next: add Playwright with a fake audio device and e2e flows (finish Day 6), then Day 7 polish.
